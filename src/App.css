@@ -1,0 +1,21 @@
+.quote {
+  background-color: lightblue;
+  border: 1px solid grey;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  width: 200px;
+}
+
+.quote.is-dragging {
+  margin-left: -4rem;
+  margin-top: -4rem;
+}
+
+.dnd-region {
+  display: flex;
+}
+
+.editor {
+  padding: 1rem;
+  flex: 1;
+}
