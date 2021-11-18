@@ -102,6 +102,7 @@ export class HighlightsExtension extends NodeExtension<HighlightOptions> {
         const attrs: DOMCompatibleAttributes = {
           ...extra.dom(node),
           ...rest,
+          'data-highlight': '',
           'data-id': id,
           'data-text': text,
         };
@@ -117,10 +118,10 @@ export class HighlightsExtension extends NodeExtension<HighlightOptions> {
     selection?: PrimitiveSelection,
   ): CommandFunction {
     return ({ tr, dispatch }) => {
-      const { from, to } = getTextSelection(selection ?? tr.selection, tr.doc);
+      const { from } = getTextSelection(selection ?? tr.selection, tr.doc);
       const node = this.type.create(attributes);
 
-      dispatch?.(tr.replaceRangeWith(from, to, node));
+      dispatch?.(tr.insert(from, node));
 
       return true;
     };

@@ -1,86 +1,49 @@
 import { forwardRef, useCallback } from 'react';
-import {
-  useCommands,
-  useEditorView,
-  useRemirrorContext,
-} from '@remirror/react';
+import { useEditorView, useRemirrorContext } from '@remirror/react';
 import type { MouseEventHandler } from 'react';
-import type { DroppableProvidedProps } from 'react-beautiful-dnd';
-import { useQuotesContext } from './QuotesContext';
 import type { Id } from './types';
 
-interface EditorProps extends DroppableProvidedProps {
+interface EditorProps {
   isDragging: boolean;
   draggableId?: Id;
 }
 
-type GenericFunction = (...args: any[]) => void;
-function over<T extends GenericFunction>(fns: T[]): GenericFunction {
-  return (...args) => {
-    fns.forEach(fn => {
-      fn(...args);
-    });
-  };
-}
+const mouseToDragMap = new Map([
+  ['mouseover', 'dragover'],
+  ['mouseleave', 'dragleave'],
+  ['mouseup', 'dragend'],
+]);
 
 const Editor = forwardRef<HTMLElement, EditorProps>(
   ({ isDragging, draggableId, ...rest }, ref) => {
     const { getRootProps } = useRemirrorContext();
-    const { insertHighlight } = useCommands();
     const view = useEditorView();
 
-    const { quotesById } = useQuotesContext();
-    const quote = draggableId ? quotesById[draggableId] : null;
-
-    // For drop cursor to work
-    const mouseToDragEvent: (
-      type: string,
-    ) => MouseEventHandler<HTMLDivElement> = useCallback(
-      (type: string) => {
-        return e => {
-          if (!isDragging) {
-            return;
-          }
-          const { screenX, screenY, clientX, clientY } = e;
-          const dragEvent = new DragEvent(type, {
-            screenX,
-            screenY,
-            clientX,
-            clientY,
-          });
-          view.dom.dispatchEvent(dragEvent);
-        };
-      },
-      [view, isDragging, quote],
-    );
-
-    const handleDrop: MouseEventHandler<HTMLDivElement> = useCallback(
-      e => {
-        if (!isDragging || !quote) {
+    // For ProseMirror drop cursors to work we need to re-emit React Beautiful DND
+    // events as drag events
+    const mouseToDragEvent: MouseEventHandler<HTMLDivElement> = useCallback(
+      ({ type, view: eventView, ...rest }) => {
+        if (!isDragging) {
           return;
         }
-        const { clientX, clientY } = e;
+        const newType = mouseToDragMap.get(type);
+        if (!newType) {
+          return;
+        }
 
-        // Figure out where we should action the drop
-        const pos =
-          view.posAtCoords({ left: clientX, top: clientY })?.pos ??
-          view.state.selection.anchor;
-
-        insertHighlight(quote, pos);
+        const dragEvent = new DragEvent(newType, rest);
+        view.dom.dispatchEvent(dragEvent);
       },
-      [isDragging, view, quote, insertHighlight],
+      [view, isDragging],
     );
 
     return (
       <div
         {...rest}
         {...getRootProps({ ref })}
-        onMouseOver={mouseToDragEvent('dragover')}
-        onMouseLeave={mouseToDragEvent('dragleave')}
-        onMouseUp={over<MouseEventHandler<HTMLDivElement>>([
-          mouseToDragEvent('dragend'),
-          handleDrop,
-        ])}
+        onMouseOver={mouseToDragEvent}
+        onMouseLeave={mouseToDragEvent}
+        onMouseUp={mouseToDragEvent}
       />
     );
   },

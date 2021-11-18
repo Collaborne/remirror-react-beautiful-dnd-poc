@@ -23,6 +23,7 @@ const Quote = forwardRef<HTMLDivElement, QuoteProps>(
         {...draggableProps}
         {...dragHandleProps}
         className={clsx('quote', { 'is-dragging': isDragging })}
+        data-highlight=""
         data-id={id}
         data-text={text}
       >

@@ -61,7 +61,7 @@ const App = () => {
         <QuotesProvider>
           <DragNDropRegion>
             <div className="dnd-region">
-              <Droppable droppableId="list">
+              <Droppable droppableId="list" isDropDisabled>
                 {provided => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
                     <QuoteList />
@@ -72,12 +72,13 @@ const App = () => {
               <div className="editor">
                 <Droppable droppableId="editor">
                   {(provided, snapshot) => (
-                    <Editor
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      isDragging={snapshot.isDraggingOver}
-                      draggableId={snapshot.draggingOverWith}
-                    />
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                      <Editor
+                        isDragging={snapshot.isDraggingOver}
+                        draggableId={snapshot.draggingOverWith}
+                      />
+                      {provided.placeholder}
+                    </div>
                   )}
                 </Droppable>
               </div>

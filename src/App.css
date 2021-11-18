@@ -4,6 +4,7 @@
   margin-bottom: 0.5rem;
   padding: 0.5rem;
   width: 200px;
+  transition-duration: 0.001s;
 }
 
 .quote.is-dragging {
