@@ -1,10 +1,21 @@
+.quotes-list {
+  padding: 0.5rem;
+}
+
 .quote {
   background-color: lightblue;
   border: 1px solid grey;
-  margin-bottom: 0.5rem;
   padding: 0.5rem;
   width: 200px;
-  transition-duration: 0.001s;
+}
+
+.quote:only-child {
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.quote:not(:last-child) {
+  margin-bottom: 0.5rem;
 }
 
 .quote.is-dragging {

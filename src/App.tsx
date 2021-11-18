@@ -34,11 +34,11 @@ function DraggableQuote({ quote, index }: DraggableQuoteProps): JSX.Element {
 function QuoteList(): JSX.Element {
   const { quotes } = useQuotesContext();
   return (
-    <>
+    <div className="quotes-list">
       {quotes.map((quote: QuoteType, index: number) => (
         <DraggableQuote quote={quote} index={index} key={quote.id} />
       ))}
-    </>
+    </div>
   );
 }
 
