@@ -6,8 +6,8 @@ import {
 } from '@remirror/react';
 import type { MouseEventHandler } from 'react';
 import type { DroppableProvidedProps } from 'react-beautiful-dnd';
-import type { Id } from './types';
 import { useQuotesContext } from './QuotesContext';
+import type { Id } from './types';
 
 interface EditorProps extends DroppableProvidedProps {
   isDragging: boolean;
@@ -26,7 +26,7 @@ function over<T extends GenericFunction>(fns: T[]): GenericFunction {
 const Editor = forwardRef<HTMLElement, EditorProps>(
   ({ isDragging, draggableId, ...rest }, ref) => {
     const { getRootProps } = useRemirrorContext();
-    const { insertParagraph } = useCommands();
+    const { insertHighlight } = useCommands();
     const view = useEditorView();
 
     const { quotesById } = useQuotesContext();
@@ -66,9 +66,9 @@ const Editor = forwardRef<HTMLElement, EditorProps>(
           view.posAtCoords({ left: clientX, top: clientY })?.pos ??
           view.state.selection.anchor;
 
-        insertParagraph(quote.content, { selection: pos });
+        insertHighlight(quote, pos);
       },
-      [isDragging, view, quote, insertParagraph],
+      [isDragging, view, quote, insertHighlight],
     );
 
     return (

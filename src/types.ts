@@ -7,8 +7,8 @@ export interface Author {
 
 export interface Quote {
   id: Id;
-  content: string;
-  author: Author;
+  text: string;
+  author?: Author;
 }
 
 export type QuoteMap = Record<Id, Quote>;

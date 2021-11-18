@@ -1,31 +1,31 @@
 import { BoldExtension, DropCursorExtension } from 'remirror/extensions';
 import { Remirror, useRemirror } from '@remirror/react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import clsx from 'clsx';
+import { HighlightsExtension } from './extensions/highlights';
 import DragNDropRegion from './DragNDropRegion';
 import Editor from './Editor';
+import Quote from './Quote';
 import { QuotesProvider, useQuotesContext } from './QuotesContext';
 import type { Quote as QuoteType } from './types';
 import 'remirror/styles/all.css';
 import './App.css';
 
-interface QuoteProps {
+interface DraggableQuoteProps {
   quote: QuoteType;
   index: number;
 }
 
-function Quote({ quote, index }: QuoteProps): JSX.Element {
+function DraggableQuote({ quote, index }: DraggableQuoteProps): JSX.Element {
   return (
     <Draggable draggableId={quote.id} index={index}>
       {(provided, snapshot) => (
-        <div
+        <Quote
           ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className={clsx('quote', { 'is-dragging': snapshot.isDragging })}
-        >
-          {quote.content}
-        </div>
+          {...quote}
+          draggableProps={provided.draggableProps}
+          dragHandleProps={provided.dragHandleProps}
+          isDragging={snapshot.isDragging}
+        />
       )}
     </Draggable>
   );
@@ -36,7 +36,7 @@ function QuoteList(): JSX.Element {
   return (
     <>
       {quotes.map((quote: QuoteType, index: number) => (
-        <Quote quote={quote} index={index} key={quote.id} />
+        <DraggableQuote quote={quote} index={index} key={quote.id} />
       ))}
     </>
   );
@@ -44,7 +44,11 @@ function QuoteList(): JSX.Element {
 
 const App = () => {
   const { manager, state } = useRemirror({
-    extensions: () => [new BoldExtension(), new DropCursorExtension()],
+    extensions: () => [
+      new BoldExtension(),
+      new DropCursorExtension(),
+      new HighlightsExtension(),
+    ],
     content: '<p>I love <b>Remirror</b></p>',
     selection: 'start',
     stringHandler: 'html',
