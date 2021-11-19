@@ -13,7 +13,7 @@ import './App.css';
 
 const initialContent = `<p>Some love for <a href="https://remirror.io">Remirror</a> from our <a href="https://remirror.io/chat">Discord community</a>.</p>
 <p/>
-<p>⬅️ Drag and drop the quotes (powered by <a href="https://github.com/atlassian/react-beautiful-dnd">react-beautiful-dnd</a>) onto this Remirror editor!</p>
+<p>⬅️ Drag and drop the quotes (powered by <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API">HTML's Drag and Drop API</a>) onto this Remirror editor!</p>
 `;
 
 export const App = () => {
@@ -32,7 +32,7 @@ export const App = () => {
   return (
     <Remirror manager={manager} initialContent={state}>
       <header className="app__header">
-        <h1>Remirror &amp; react-beautiful-dnd PoC</h1>
+        <h1>Remirror &amp; native drag-n-drop events</h1>
       </header>
       <div className="app">
         <div className="app__quotes">
