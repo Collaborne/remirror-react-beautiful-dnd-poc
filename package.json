@@ -2,6 +2,7 @@
   "name": "remirror-react-beautiful-dnd-poc",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://collaborne.github.io/remirror-react-beautiful-dnd-poc",
   "dependencies": {
     "@remirror/pm": "^1.0.6",
     "@remirror/react": "^1.0.15",
