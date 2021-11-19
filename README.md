@@ -8,7 +8,7 @@ We found during user testing, that users expected to be able to drag-n-drop UI e
 
 ## Our approach
 
-### [Live demo](https://collaborne.github.io/remirrorreact-beautiful-dnd-poc)
+### [Live demo](https://collaborne.github.io/remirror-react-beautiful-dnd-poc)
 
 Or locally
 
