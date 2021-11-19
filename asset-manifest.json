@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/static/css/main.eeee75ae.chunk.css",
-    "main.js": "/static/js/main.b0b424a6.chunk.js",
-    "main.js.map": "/static/js/main.b0b424a6.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.24ca230d.js",
-    "runtime-main.js.map": "/static/js/runtime-main.24ca230d.js.map",
-    "static/css/2.acd8163b.chunk.css": "/static/css/2.acd8163b.chunk.css",
-    "static/js/2.b53ede0e.chunk.js": "/static/js/2.b53ede0e.chunk.js",
-    "static/js/2.b53ede0e.chunk.js.map": "/static/js/2.b53ede0e.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.acd8163b.chunk.css.map": "/static/css/2.acd8163b.chunk.css.map",
-    "static/css/main.eeee75ae.chunk.css.map": "/static/css/main.eeee75ae.chunk.css.map",
-    "static/js/2.b53ede0e.chunk.js.LICENSE.txt": "/static/js/2.b53ede0e.chunk.js.LICENSE.txt"
+    "main.css": "/remirror-react-beautiful-dnd-poc/static/css/main.eeee75ae.chunk.css",
+    "main.js": "/remirror-react-beautiful-dnd-poc/static/js/main.b0b424a6.chunk.js",
+    "main.js.map": "/remirror-react-beautiful-dnd-poc/static/js/main.b0b424a6.chunk.js.map",
+    "runtime-main.js": "/remirror-react-beautiful-dnd-poc/static/js/runtime-main.d3db575b.js",
+    "runtime-main.js.map": "/remirror-react-beautiful-dnd-poc/static/js/runtime-main.d3db575b.js.map",
+    "static/css/2.acd8163b.chunk.css": "/remirror-react-beautiful-dnd-poc/static/css/2.acd8163b.chunk.css",
+    "static/js/2.b53ede0e.chunk.js": "/remirror-react-beautiful-dnd-poc/static/js/2.b53ede0e.chunk.js",
+    "static/js/2.b53ede0e.chunk.js.map": "/remirror-react-beautiful-dnd-poc/static/js/2.b53ede0e.chunk.js.map",
+    "index.html": "/remirror-react-beautiful-dnd-poc/index.html",
+    "static/css/2.acd8163b.chunk.css.map": "/remirror-react-beautiful-dnd-poc/static/css/2.acd8163b.chunk.css.map",
+    "static/css/main.eeee75ae.chunk.css.map": "/remirror-react-beautiful-dnd-poc/static/css/main.eeee75ae.chunk.css.map",
+    "static/js/2.b53ede0e.chunk.js.LICENSE.txt": "/remirror-react-beautiful-dnd-poc/static/js/2.b53ede0e.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.24ca230d.js",
+    "static/js/runtime-main.d3db575b.js",
     "static/css/2.acd8163b.chunk.css",
     "static/js/2.b53ede0e.chunk.js",
     "static/css/main.eeee75ae.chunk.css",
