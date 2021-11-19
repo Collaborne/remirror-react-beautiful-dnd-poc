@@ -1,8 +1,4 @@
-import { forwardRef, useMemo } from 'react';
-import {
-  DraggableProvidedDraggableProps,
-  DraggableProvidedDragHandleProps,
-} from 'react-beautiful-dnd';
+import { forwardRef, useMemo, useCallback, DragEventHandler } from 'react';
 import clsx from 'clsx';
 import type { Quote as QuoteType } from '../../types';
 import './Quote.css';
@@ -13,9 +9,7 @@ export interface QuoteProps
   extends Pick<QuoteType, 'id' | 'text' | 'url' | 'date'> {
   username: string;
   avatarColor: string;
-  isDragging?: boolean;
-  draggableProps?: DraggableProvidedDraggableProps;
-  dragHandleProps?: DraggableProvidedDragHandleProps;
+  draggable?: boolean;
   className?: string;
 }
 
@@ -28,19 +22,21 @@ export const Quote = forwardRef<HTMLDivElement, QuoteProps>(
       date,
       username,
       avatarColor,
-      isDragging = false,
-      draggableProps = {},
-      dragHandleProps = {},
       className,
+      draggable = false,
     },
     ref,
   ) => {
     const dateObj = useMemo(() => new Date(date), [date]);
+
+    const handleDragStart: DragEventHandler<HTMLDivElement> = useCallback(e => {
+      const target = e.target as HTMLDivElement;
+      e.dataTransfer.setData('text/html', target.outerHTML);
+    }, []);
+
     return (
       <div
         ref={ref}
-        {...draggableProps}
-        {...dragHandleProps}
         className={clsx('quote', className)}
         data-quote=""
         data-id={id}
@@ -49,6 +45,8 @@ export const Quote = forwardRef<HTMLDivElement, QuoteProps>(
         data-date={date}
         data-username={username}
         data-avatar-color={avatarColor}
+        draggable={draggable ? 'true' : 'false'}
+        onDragStart={handleDragStart}
       >
         <div className="quote__author">
           <div
