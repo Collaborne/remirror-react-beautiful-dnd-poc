@@ -1,33 +1,24 @@
-.quotes-list {
-  padding: 0.5rem;
-}
-
-.quote {
-  background-color: lightblue;
-  border: 1px solid grey;
-  padding: 0.5rem;
-  width: 200px;
-}
-
-.quote:only-child {
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.quote:not(:last-child) {
-  margin-bottom: 0.5rem;
-}
-
-.quote.is-dragging {
-  margin-left: -4rem;
-  margin-top: -4rem;
-}
-
-.dnd-region {
+.app {
   display: flex;
+  padding: 0.5rem;
 }
 
-.editor {
-  padding: 1rem;
+.app__header {
+  background-color: rgba(121, 99, 210, 0.133);
+  margin-bottom: 0.5rem;
+  padding: 1rem 2rem;
+}
+
+.app__header h1 {
+  color: #7963d2;
+  margin: 0;
+}
+
+.app__quotes {
+  width: 25%;
+}
+
+.app__editor {
+  margin-left: 0.75rem;
   flex: 1;
 }

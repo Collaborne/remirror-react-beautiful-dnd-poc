@@ -16,44 +16,51 @@ import {
   ProsemirrorAttributes,
 } from '@remirror/core';
 import { NodeViewComponentProps } from '@remirror/react';
-import Quote from '../../Quote';
+import { Quote } from '../../components/Quote';
 
-export interface HighlightOptions {
+export interface QuoteOptions {
   render?: (
     props: NodeViewComponentProps,
   ) => React.ReactElement<HTMLElement> | null;
 }
 
-function isHighlightAttributes(
-  thing:
-    | ProsemirrorAttributes<any>
-    | ProsemirrorAttributes<HighlightAttributes>,
-): thing is ProsemirrorAttributes<HighlightAttributes> {
+function isQuoteAttributes(
+  thing: ProsemirrorAttributes<any> | ProsemirrorAttributes<QuoteAttributes>,
+): thing is ProsemirrorAttributes<QuoteAttributes> {
   return (
-    (thing as ProsemirrorAttributes<HighlightAttributes>).id !== undefined &&
-    (thing as ProsemirrorAttributes<HighlightAttributes>).text !== undefined
+    (thing as ProsemirrorAttributes<QuoteAttributes>).id !== undefined &&
+    (thing as ProsemirrorAttributes<QuoteAttributes>).text !== undefined
   );
 }
 
 const DefaultRender: React.FC<NodeViewComponentProps> = ({ node }) => {
-  if (isHighlightAttributes(node.attrs) === false) {
+  if (isQuoteAttributes(node.attrs) === false) {
     return null;
   }
-  const { id, text } = node.attrs;
-  return <Quote id={id} text={text} />;
+  const { id, text, url, date, username, avatarColor } = node.attrs;
+  return (
+    <Quote
+      id={id}
+      text={text}
+      url={url}
+      date={date}
+      username={username}
+      avatarColor={avatarColor}
+    />
+  );
 };
 
 /**
  * Adds a file node to the editor
  */
-@extension<HighlightOptions>({
+@extension<QuoteOptions>({
   defaultOptions: {
     render: DefaultRender,
   },
 })
-export class HighlightsExtension extends NodeExtension<HighlightOptions> {
+export class QuotesExtension extends NodeExtension<QuoteOptions> {
   get name() {
-    return 'highlight' as const;
+    return 'quote' as const;
   }
 
   ReactComponent: ComponentType<NodeViewComponentProps> = props => {
@@ -72,7 +79,11 @@ export class HighlightsExtension extends NodeExtension<HighlightOptions> {
       attrs: {
         ...extra.defaults(),
         id: { default: null },
-        text: { default: '' },
+        text: { default: null },
+        url: { default: null },
+        date: { default: null },
+        username: { default: null },
+        avatarColor: { default: null },
       },
       selectable: true,
       draggable: true,
@@ -81,30 +92,43 @@ export class HighlightsExtension extends NodeExtension<HighlightOptions> {
       ...override,
       parseDOM: [
         {
-          tag: 'div[data-highlight]',
+          tag: 'div[data-quote]',
           priority: ExtensionPriority.Low,
           getAttrs: dom => {
             const anchor = dom as HTMLDivElement;
             const id = anchor.getAttribute('data-id');
             const text = anchor.getAttribute('data-text');
+            const url = anchor.getAttribute('data-url');
+            const date = anchor.getAttribute('data-date');
+            const username = anchor.getAttribute('data-username');
+            const avatarColor = anchor.getAttribute('data-avatar-color');
 
             return {
               ...extra.parse(dom),
               id,
               text,
+              url,
+              date: date ? parseFloat(date) : 0,
+              username,
+              avatarColor,
             };
           },
         },
         ...(override.parseDOM ?? []),
       ],
       toDOM: node => {
-        const { id, text, ...rest } = omitExtraAttributes(node.attrs, extra);
+        const { id, text, url, date, username, avatarColor, ...rest } =
+          omitExtraAttributes(node.attrs, extra);
         const attrs: DOMCompatibleAttributes = {
           ...extra.dom(node),
           ...rest,
-          'data-highlight': '',
+          'data-quote': '',
           'data-id': id,
           'data-text': text,
+          'data-url': url,
+          'data-date': date,
+          'data-username': username,
+          'data-avatar-color': avatarColor,
         };
 
         return ['div', attrs];
@@ -113,8 +137,8 @@ export class HighlightsExtension extends NodeExtension<HighlightOptions> {
   }
 
   @command()
-  insertHighlight(
-    attributes: HighlightAttributes,
+  insertQuote(
+    attributes: QuoteAttributes,
     selection?: PrimitiveSelection,
   ): CommandFunction {
     return ({ tr, dispatch }) => {
@@ -128,7 +152,11 @@ export class HighlightsExtension extends NodeExtension<HighlightOptions> {
   }
 }
 
-interface HighlightAttributes {
+interface QuoteAttributes {
   id: string;
   text: string;
+  url: string;
+  date: number;
+  username: string;
+  avatarColor: string;
 }

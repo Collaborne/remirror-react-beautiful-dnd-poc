@@ -1,12 +1,8 @@
 import { forwardRef, useCallback } from 'react';
 import { useEditorView, useRemirrorContext } from '@remirror/react';
 import type { MouseEventHandler } from 'react';
-import type { Id } from './types';
-
-interface EditorProps {
-  isDragging: boolean;
-  draggableId?: Id;
-}
+import type { Id } from '../../types';
+import 'remirror/styles/all.css';
 
 const mouseToDragMap = new Map([
   ['mouseover', 'dragover'],
@@ -14,7 +10,12 @@ const mouseToDragMap = new Map([
   ['mouseup', 'dragend'],
 ]);
 
-const Editor = forwardRef<HTMLElement, EditorProps>(
+export interface EditorProps {
+  isDragging: boolean;
+  draggableId?: Id;
+}
+
+export const Editor = forwardRef<HTMLElement, EditorProps>(
   ({ isDragging, draggableId, ...rest }, ref) => {
     const { getRootProps } = useRemirrorContext();
     const view = useEditorView();
@@ -38,15 +39,15 @@ const Editor = forwardRef<HTMLElement, EditorProps>(
     );
 
     return (
-      <div
-        {...rest}
-        {...getRootProps({ ref })}
-        onMouseOver={mouseToDragEvent}
-        onMouseLeave={mouseToDragEvent}
-        onMouseUp={mouseToDragEvent}
-      />
+      <div className="remirror-theme">
+        <div
+          {...rest}
+          {...getRootProps({ ref })}
+          onMouseOver={mouseToDragEvent}
+          onMouseLeave={mouseToDragEvent}
+          onMouseUp={mouseToDragEvent}
+        />
+      </div>
     );
   },
 );
-
-export default Editor;

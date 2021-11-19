@@ -1,15 +1,13 @@
 import { MouseEventHandler, useCallback, useRef } from 'react';
-import {
-  DragDropContext,
-  DropResult,
-  ResponderProvided,
-} from 'react-beautiful-dnd';
-import type { ReactNode } from 'react';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import clsx from 'clsx';
 import { useCommands, useEditorView } from '@remirror/react';
-import { useQuotesContext } from './QuotesContext';
+import { useQuotesContext } from '../QuotesContext';
+import type { ReactNode } from 'react';
 
-interface DragNDropRegionProps {
+export interface DragNDropRegionProps {
   children: ReactNode | ReactNode[];
+  className?: string;
 }
 
 interface MouseCoords {
@@ -17,8 +15,11 @@ interface MouseCoords {
   clientY: number;
 }
 
-const DragNDropRegion = ({ children }: DragNDropRegionProps): JSX.Element => {
-  const { insertHighlight } = useCommands();
+export const DragNDropRegion = ({
+  children,
+  className,
+}: DragNDropRegionProps): JSX.Element => {
+  const { insertQuote } = useCommands();
   const { quotesById } = useQuotesContext();
   const view = useEditorView();
 
@@ -34,7 +35,7 @@ const DragNDropRegion = ({ children }: DragNDropRegionProps): JSX.Element => {
   );
 
   const onDragEnd = useCallback(
-    (result: DropResult, provided: ResponderProvided) => {
+    (result: DropResult) => {
       const { draggableId, destination } = result;
       if (destination?.droppableId !== 'editor') {
         return;
@@ -50,16 +51,20 @@ const DragNDropRegion = ({ children }: DragNDropRegionProps): JSX.Element => {
         view.state.selection.anchor;
 
       const quote = quotesById[draggableId];
-      insertHighlight(quote, pos);
+      const {
+        author: { username, color },
+        ...rest
+      } = quote;
+      insertQuote({ ...rest, username, avatarColor: color }, pos);
     },
-    [view, insertHighlight, quotesById],
+    [view, insertQuote, quotesById],
   );
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div onMouseUp={handleMouseUp}>{children}</div>
+      <div onMouseUp={handleMouseUp} className={clsx(className)}>
+        {children}
+      </div>
     </DragDropContext>
   );
 };
-
-export default DragNDropRegion;
